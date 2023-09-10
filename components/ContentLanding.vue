@@ -1,97 +1,78 @@
 <template>
-    <div>
-      <div class="LandingPage">
-        <h1>Welcome to a world of inspiration for your home</h1>
-        <p>Buy your future furniture here</p>
-      </div>
-      <div class="page" >
-        <div class="paragraph">
-          <p class="paragraph1">The Creative Space Edition</p>
-          <p class="paragraph2">Lorem ipsum dolor sit, Sque, tenetur rem alop sie akuiii!</p>
-          <button>See me</button>
-        </div>
-        <img src="~/assets/sofabiru1.png" alt="">
-      </div>
+  <section class="products section container" id="products">
+    <h2 class="section__title">
+      Products
+    </h2>
+
+    <div class="products__container grid">
+      <article class="products__card">
+        <img src="~/assets/sofabiru1.png" alt="" class="products__img">
+
+        <h3 class="products__title">Spirit rose</h3>
+        <span class="products__price">$1500</span>
+
+        <button class="products__button">
+          <i class='bx bx-shopping-bag'></i>
+        </button>
+      </article>
     </div>
-  </template>
-  
-  <style>
-    .LandingPage {
-      text-align: center;
-      align-items: center; /* Menggunakan align-items untuk mengatur penempatan vertikal */
-      font-family: "Montserrat", sans-serif;
-      margin-top: 45px;
-      color: #3e8bd8;
-    }
-  
+  </section>
+</template>
 
-    .LandingPage p {
-      font-weight: 400;
-      font-size: larger;
-    }
-    .page{
-      font-family: "Montserrat";
-      width:100%;
-      margin:50px 0;
-      position:relative;
-      height:200px;
-      background: linear-gradient(-320deg,rgba(0, 0, 255, 0.726),white);
-    }
-    .page img{
-      position:absolute;
-      width:360px;
-      top:-50px;
-      left:750px;
-      mix-blend-mode:multiply;
-      cursor:pointer;
-    }
-    .paragraph{
-      width:48%;
-      padding:1% 0 0 100px;
-      text-align: center;
-    }
-    .paragraph1{
-      font-weight: 400;
-      font-size: x-large;
-      color:#ffd100;
-    }
-    .paragraph2{
-      font-size: medium;
-      margin-top:0;
-    }
-    .page img:hover{
-      width:380px;
-    }
-    button:hover{
-      width:120px;
-      height:35px;
-      background: white;
-      color:#ffd100;
-    }
-    button{
-      width:100px;
-      height:30px;
-      border-radius:20px;
-      border-style: none;
-      background: #ffd100;
-      color:white;
-      font-family: "Montserrat";
-      font-weight: bold;
-      cursor: pointer;
-    }
+<style scoped>
+#products{
+  margin-top:400px;
+}
+.products__container {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
 
-    @media screen and (max-width: 760px) {
-      .page img{
-        width:60%;
-        top:-100px;
-        left:90px;
-      }
+.products__card {
+  position: relative;
+  background-color: var(--container-color);
+  padding: 1.25rem 0;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: .3s;
+}
 
-      .pa{
-        position:absolute;
-        top:50px;
-      }
+.products__img {
+  height: 125px;
+  margin-bottom: var(--mb-1);
+}
 
-    }
-  </style>
-  
+.products__title, 
+.products__price {
+  font-size: var(--small-font-size);
+  font-weight: var(--font-medium);
+}
+
+.products__title {
+  text-transform: uppercase;
+  margin-bottom: var(--mb-0-5);
+}
+
+.products__price {
+  color: var(--first-color);
+}
+
+.products__button {
+  background-color: var(--button-color);
+  padding: .4rem;
+  color: #fff;
+  font-size: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transition: .3s;
+}
+
+.products__button:hover {
+  background-color: var(--button-color-alt);
+}
+
+.products__card:hover {
+  box-shadow: 0 8px 32px hsla(0, 0%, 10%, .1);
+}
+</style>
