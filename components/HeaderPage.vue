@@ -74,6 +74,7 @@
         display:flex;
         text-align: center;
         align-items: center;
+        column-gap:10px;
     }
     .login-cart button{
       width:100px;

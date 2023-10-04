@@ -3,9 +3,10 @@
         <div class="dropdown-wrapper">
             <button class="dropdown-button" @click="backCategory">Category</button>
             <div class="dropdown-content">
-                <a href="#" @click="filterCategory('Bed')">Bed</a>
-                <a href="#" @click="filterCategory('Chair')">Chair</a>
+                <a class="content" href="#" @click="filterCategory('Bed')">Bed</a>
+                <a class="content" href="#" @click="filterCategory('Chair')">Chair</a>
             </div>
+            <nuxt-link to="/create" class="add-product"> Add</nuxt-link>
         </div>
         <div class="wrap">
             <CardComponent v-for="item in filteredItems" :key="item.id" :item="item" />
@@ -23,9 +24,7 @@ export default {
     data() {
         return {
             items: [
-                { id: 1, name: 'IDANAS', description: 'Bed frame, high, black-brown', price: "$249", src: require('~/assets/bed-dark-brown.jpg'), category: 'Bed' },
-                { id: 2, name: 'MALM', description: 'white stained oak veneer/Luröy', price: "$279.0", src: require('~/assets/bed-wood.jpg'), category: 'Bed' },
-                { id: 3, name: 'MALSKAR', description: 'Swivel Chair', price: "$49", src: require('~/assets/chair-grey.jpg'), category: 'Chair' },
+
             ],
             selectedCategory: '', // Kategori yang dipilih
         };
@@ -41,12 +40,25 @@ export default {
             }
         },
     },
+
+    mounted() {
+        this.getItems();
+    },
     methods: {
         filterCategory(category) {
             // Fungsi untuk mengatur kategori yang dipilih
             this.selectedCategory = category;
         },
-        backCategory(){
+        async getItems() {
+            const response = await this.$axios.get("/rest/v1/Product", {
+                headers: {
+                    apikey: process.env.supabaseKey
+                }
+            })
+
+            this.items = response?.data
+        },
+        backCategory() {
             this.selectedCategory = ''
         }
     },
@@ -56,44 +68,51 @@ export default {
 
 <style scoped>
 .dropdown-wrapper {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    margin:16px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .dropdown-button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
+    background-color: white;
+    font-size: 32px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: "Montserrat";
+    display: flex;
+    justify-content: center;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-width: 160px;
-  z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    margin-left: 16px;
+    min-width: 160px;
+    z-index: 1;
+    font-family: "Montserrat";
 }
 
 .dropdown-content a {
-  color: #333;
-  padding: 10px;
-  text-decoration: none;
-  display: block;
+    color: #333;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 .dropdown-wrapper:hover .dropdown-content {
-  display: block;
+    display: block;
 }
 
-.wrap{
-    display:flex;
+.wrap {
+    display: flex;
     justify-content: space-evenly;
 }
 </style>

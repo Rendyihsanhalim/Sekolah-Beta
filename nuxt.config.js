@@ -11,6 +11,10 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },{rel:'stylesheet',href:"https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Poppins:wght@500;700;900&family=Roboto:wght@900&display=swap"},{rel:"stylesheet", href:"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"}],
   },
 
+  env: {
+    supabaseApi: process.env.SUPABASE_API ,
+    supabaseKey: process.env.SUPABASE_KEY},
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/assets/main.css'],
 
@@ -40,7 +44,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.SUPABASE_API,
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
