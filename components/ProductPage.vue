@@ -1,15 +1,16 @@
 <template>
-    <section>
+    <section class="flex-section">
         <div class="dropdown-wrapper">
             <button class="dropdown-button" @click="backCategory">Category</button>
             <div class="dropdown-content">
-                <a class="content" href="#" @click="filterCategory('Bed')">Bed</a>
-                <a class="content" href="#" @click="filterCategory('Chair')">Chair</a>
+                <a v-for="category in category" :key="category.id" class="content" href="#"
+                    @click="filterCategory(category.name)">{{ category.name }}</a>
             </div>
-            <nuxt-link to="/create" class="add-product"> Add</nuxt-link>
+            <nuxt-link to="/product/CreateProduct" class="add-product"> Add Product</nuxt-link>
+            <nuxt-link to="/product/CreateCategory" class="add-category"> Add Category</nuxt-link>
         </div>
         <div class="wrap">
-            <CardComponent v-for="item in filteredItems" :key="item.id" :item="item" />
+            <CardComponent v-for="item in filteredItems" :key="item.id" :item="item" :onDelete="deleteItem" @getData="getItems" />
         </div>
     </section>
 </template>
@@ -24,6 +25,10 @@ export default {
     data() {
         return {
             items: [
+
+            ],
+
+            category: [
 
             ],
             selectedCategory: '', // Kategori yang dipilih
@@ -43,7 +48,9 @@ export default {
 
     mounted() {
         this.getItems();
+        this.getCategory();
     },
+    
     methods: {
         filterCategory(category) {
             // Fungsi untuk mengatur kategori yang dipilih
@@ -58,9 +65,34 @@ export default {
 
             this.items = response?.data
         },
+
+        async getCategory() {
+            const response = await this.$axios.get("/rest/v1/Category", {
+                headers: {
+                    apikey: process.env.supabaseKey
+                }
+            })
+
+            this.category = response?.data;
+        },
         backCategory() {
             this.selectedCategory = ''
-        }
+        },
+        async deleteItem(itemId) {
+            try {
+                // Kirim permintaan penghapusan ke server Supabase
+                await this.$axios.delete(`/rest/v1/Product/${itemId}`, {
+                    headers: {
+                        apikey: process.env.supabaseKey,
+                    },
+                });
+
+                // Hapus item dari daftar lokal (jika berhasil dihapus dari server)
+                this.items = this.items.filter((item) => item.id !== itemId);
+            } catch (error) {
+                console.error("Error deleting item:", error.message);
+            }
+        },
     },
 };
 </script>
@@ -69,10 +101,11 @@ export default {
 <style scoped>
 .dropdown-wrapper {
     position: relative;
-    margin:16px 15px;
-    display: flex;
-    justify-content: space-between;
+    margin: 16px 15px;
+    display: inline-flex;
     align-items: center;
+    font-family: "Montserrat";
+    column-gap: 20px;
 }
 
 .dropdown-button {
@@ -109,10 +142,45 @@ export default {
 
 .dropdown-wrapper:hover .dropdown-content {
     display: block;
+    top: 50px;
 }
 
 .wrap {
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 20px 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+    border-style: none;
+    background: rgb(112, 102, 102);
+    color: white;
+    font-family: "Montserrat";
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+    border-style: none;
+    background: #ffd100;
+    color: white;
+    font-family: "Montserrat";
+    font-weight: bold;
+    cursor: pointer;
 }
 </style>
